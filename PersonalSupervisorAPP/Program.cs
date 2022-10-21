@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PersonalSupervisorAPP
@@ -10,6 +11,8 @@ namespace PersonalSupervisorAPP
         static void Main(string[] args)
         {
             LogInMenu();
+
+
         }
 
         static void LogInMenu()
@@ -56,6 +59,39 @@ namespace PersonalSupervisorAPP
 
         }
 
-        
+        static void ReadCSVFile ()
+        {
+            List<string> CSVColunm1 = new List<string>();
+            List<string> CSVColunm2 = new List<string>();
+            List<string> CSVColunm3 = new List<string>();
+            using (var reader = new StreamReader("userDetails.csv"))
+            {
+                
+                reader.ReadLine();
+                while (!reader.EndOfStream)
+                {
+                    try
+                    {
+                        var line = reader.ReadLine();   //Reads each line of file 
+                        var values = line.Split(',');   //Splits the colums at the comma 
+
+
+                        CSVColunm1.Add(values[0]);       //Adds the values of the 1st colum to the list 
+                        CSVColunm2.Add(values[1]);          //Adds the values of the 2nd colum to the list
+                        CSVColunm3.Add(values[2]);        //Adds the values of the 3rd colum to the list
+                        paintPrice.Add(double.Parse(values[3]) / 100);          //Adds the values of the 4th colum to the list
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("CSV File Unreadable");
+                    }
+
+
+                }
+            }
+
+        }
+
+
     }
 }
