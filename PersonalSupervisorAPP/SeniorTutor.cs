@@ -6,10 +6,21 @@ namespace PersonalSupervisorAPP
 {
     class SeniorTutor
     {
+        private string _tutorName;
+        private string _tutorUserName;
+        private string _tutorUserPassword;
 
+        public SeniorTutor(string name, string userName, string userPassword)
+        {
+            _tutorName = name;
+            _tutorUserName = userName;
+            _tutorUserPassword = userPassword;
+
+
+        }
 
         //Displays the menu that the student can see 
-        public static void StudentMenu()
+        public static void SeniorTutorMenu()
         {
             int userMenuChoice = 0;
             Console.WriteLine("=================");

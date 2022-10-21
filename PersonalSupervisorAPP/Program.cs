@@ -18,7 +18,8 @@ namespace PersonalSupervisorAPP
         static void Main(string[] args)
         {
             ReadCSVFile();
-           // LogInMenu();
+            CreateMembers();
+            LogInMenu();
 
 
         }
@@ -27,6 +28,7 @@ namespace PersonalSupervisorAPP
         {
             string userName = null;
             string userPassword = null;
+            string userType = null;
             int indexNumber = 0;
             bool validUsername = false;
 
@@ -39,6 +41,7 @@ namespace PersonalSupervisorAPP
 
             while (validUsername == false)
             {
+                indexNumber = 0;
                 Console.Write("Please enter a user name: ");
                 try
                 {
@@ -56,7 +59,8 @@ namespace PersonalSupervisorAPP
 
                     if (userName == storedUserName)
                     {
-                        validUsername = true; 
+                        validUsername = true;
+                        break; 
                     }
                     else
                     {
@@ -65,27 +69,46 @@ namespace PersonalSupervisorAPP
                     }
                 }
             }
-                
+
+
+            if (validUsername == true)
+            {
+                userType = jobPosition[indexNumber];
+                do
+                {
+                    Console.Write("\nPlease enter a password: ");
+                    try
+                    {
+                        userPassword = Console.ReadLine();
+                        if (userPassword == storedUserPassowrd[indexNumber])
+                        {
+                           
+                            if (userType == "Student")
+                            {
+                                Student.StudentMenu();
+                            }
+                            else if (userType == "PS")
+                            {
+                                PersonalSupervisor.PersonalSupervisorMenu();
+                            }
+                            else if (userType == "ST")
+                            {
+                                SeniorTutor.SeniorTutorMenu();
+                            }
+
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Sorry somthing went wrong");
+                    }
+                    Console.ReadLine();
+                } while (userPassword == "" || userPassword == null);
+            }
+            
 
 
            
-
-       
-
-
-            do
-            {
-                Console.Write("\nPlease enter a password: ");
-                try
-                {
-                    userPassword = Console.ReadLine();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Sorry somthing went wrong");
-                }
-                Console.ReadLine();
-            } while (userPassword == "" || userPassword == null); 
 
 
 
@@ -93,71 +116,117 @@ namespace PersonalSupervisorAPP
 
         static void ReadCSVFile()
         {
+            string filePath = @"UserDetails.csv"; //File that needs to be read
+        //    Console.WriteLine(File.Exists(filePath) ? "File exists." : "File does not exist.");
+            
+            //Reads the file and sperates the inforamtion to be used later 
+            using (var reader = new StreamReader(filePath))
+            {
+
+
+               
+                while (!reader.EndOfStream)
+                {
+                    try
+                    {
+                        var line = reader.ReadLine();   //Reads each line of file 
+                         var values = line.Split(',', ',', ',', ',');   //Splits the colums at the comma 
+
+
+                        personName.Add(values[0]);       //Adds the persons name to the list  
+                        storedUserName.Add(values[1]);       //Adds the user name to the list
+                        storedUserPassowrd.Add(values[2]);       //Adds the user password to the list
+                        jobPosition.Add(values[3]);          //Adds the user job title to the list 
+                        if (values[4] != null)
+                        {
+                            personalSupervisor.Add(values[4]);  //Adds the students personal supervisor name
+                        }
+                        else
+                        {
+                         personalSupervisor.Add("");     //Adds a default value as member is alreay a PS or SL 
+                        }
+
+
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Error occored loading students please try again");
+                    }
+
+
+                }
+            }
+
+        }
+
+        static void CreateMembers()
+        {
+            int indexNum = 0;
+            List<Student> studentsList = new List<Student>();
+            List <PersonalSupervisor> personakSupervisorList = new List<PersonalSupervisor>();
+            List <SeniorTutor> seniorTutorList = new List<SeniorTutor>();
+
+            foreach (string job in jobPosition)
+            {
+                if (job == "Student")
+                {
+                    studentsList.Add(new Student(personName[indexNum], storedUserName[indexNum], storedUserPassowrd[indexNum], personalSupervisor[indexNum]));
+                    indexNum++;
+                }
+                else if (job == "PS")
+                {
+                    personakSupervisorList.Add(new PersonalSupervisor(personName[indexNum], storedUserName[indexNum], storedUserPassowrd[indexNum]));
+                    indexNum++; 
+                }
+                else if (job == "SL")
+                {
+                    seniorTutorList.Add(new SeniorTutor(personName[indexNum], storedUserName[indexNum], storedUserPassowrd[indexNum]));
+                    indexNum++;
+                }
+                else
+                {
+                    indexNum++;
+                }
+            }       
+
+        }
+
+        public static void LogOutOrContine()
+        {
+            int userChoice = 0;
+
+            Console.WriteLine("\n========================");
+            Console.WriteLine("1. Main menu");
+            Console.WriteLine("2. Log out\n");
+
 
             try
             {
-                // Create an instance of StreamReader to read from a file.
-                // The using statement also closes the StreamReader.
-                using (StreamReader sr = new StreamReader("UserDetails.csv"))
+                do
                 {
-                    string line;
-                    // Read and display lines from the file until the end of
-                    // the file is reached.
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(line);
-                    }
+                    Console.WriteLine("Please enter a value between 1 and 2");
+                    userChoice = int.Parse(Console.ReadLine());
+                } while (userChoice < 1 || userChoice > 2);
+
+                switch (userChoice)
+                {
+                    case 1:
+                        Student.StudentMenu();
+                        break;
+                    case 2:
+                        LogInMenu();
+                        break;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // Let the user know what went wrong.
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
+                userChoice = 0;
+
             }
 
 
 
         }
-
-            //using (var reader = new StreamReader("UserDetails.csv"))
-            //{
-
-
-               
-            //    while (!reader.EndOfStream)
-            //    {
-            //        try
-            //        {
-            //            var line = reader.ReadLine();   //Reads each line of file 
-            //            var values = line.Split(',', ',', ',', ',');   //Splits the colums at the comma 
-
-
-            //            personName.Add(values[0]);       //Adds the persons name to the list  
-            //            storedUserName.Add(values[1]);       //Adds the user name to the list
-            //            storedUserPassowrd.Add(values[2]);       //Adds the user password to the list
-            //            jobPosition.Add(values[3]);          //Adds the user job title to the list 
-            //            if (values[4] != null)
-            //            {
-            //                personalSupervisor.Add(values[4]);  //Adds the students personal supervisor name
-            //            }
-            //            else
-            //            {
-            //                personalSupervisor.Add("");     //Adds a default value as member is alreay a PS or SL 
-            //            }
-
-
-            //        }
-            //        catch (Exception)
-            //        {
-            //            Console.WriteLine("CSV File Unreadable");
-            //        }
-
-
-            //    }
-            //}
-
-        //}
 
 
     }

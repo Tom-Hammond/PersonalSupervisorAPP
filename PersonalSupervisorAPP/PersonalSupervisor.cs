@@ -6,6 +6,18 @@ namespace PersonalSupervisorAPP
 {
     class PersonalSupervisor
     {
+        private string _supervisorName;
+        private string _supervisorUserName;
+        private string _supervisorUserPassword;
+
+        public PersonalSupervisor(string name, string userName, string userPassword)
+        {
+            _supervisorName = name;
+            _supervisorUserName = userName;
+            _supervisorUserPassword = userPassword;
+          
+
+        }
         //Displays the menu that the student can see 
         public static void PersonalSupervisorMenu()
         {
