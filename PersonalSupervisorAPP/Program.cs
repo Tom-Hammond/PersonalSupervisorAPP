@@ -6,11 +6,19 @@ namespace PersonalSupervisorAPP
 {
     class Program
     {
+        static List<string> personName = new List<string>();
+        static List<string> storedUserName = new List<string>();
+        static List<string> storedUserPassowrd = new List<string>();
+        static List<string> jobPosition = new List<string>();
+        static List<string> personalSupervisor = new List<string>();
+
+
         string userName = null;
         string userPassword = null;
         static void Main(string[] args)
         {
-            LogInMenu();
+            ReadCSVFile();
+           // LogInMenu();
 
 
         }
@@ -19,6 +27,8 @@ namespace PersonalSupervisorAPP
         {
             string userName = null;
             string userPassword = null;
+            int indexNumber = 0;
+            bool validUsername = false;
 
             Console.WriteLine("=================");
             Console.WriteLine("Welcome to the Support App");
@@ -26,7 +36,8 @@ namespace PersonalSupervisorAPP
             Console.WriteLine("=================");
             Console.WriteLine("Log In");
             Console.WriteLine("=================\n");
-            do
+
+            while (validUsername == false)
             {
                 Console.Write("Please enter a user name: ");
                 try
@@ -36,10 +47,31 @@ namespace PersonalSupervisorAPP
                 catch (Exception)
                 {
                     Console.WriteLine("Sorry somthing went wrong");
+
+
                 }
 
+                foreach (string storedUserName in storedUserName)
+                {
 
-            } while (userName == "" || userName == null);
+                    if (userName == storedUserName)
+                    {
+                        validUsername = true; 
+                    }
+                    else
+                    {
+                        indexNumber++;
+                        validUsername = false; 
+                    }
+                }
+            }
+                
+
+
+           
+
+       
+
 
             do
             {
@@ -59,38 +91,73 @@ namespace PersonalSupervisorAPP
 
         }
 
-        static void ReadCSVFile ()
+        static void ReadCSVFile()
         {
-            List<string> CSVColunm1 = new List<string>();
-            List<string> CSVColunm2 = new List<string>();
-            List<string> CSVColunm3 = new List<string>();
-            using (var reader = new StreamReader("userDetails.csv"))
+
+            try
             {
-                
-                reader.ReadLine();
-                while (!reader.EndOfStream)
+                // Create an instance of StreamReader to read from a file.
+                // The using statement also closes the StreamReader.
+                using (StreamReader sr = new StreamReader("UserDetails.csv"))
                 {
-                    try
+                    string line;
+                    // Read and display lines from the file until the end of
+                    // the file is reached.
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        var line = reader.ReadLine();   //Reads each line of file 
-                        var values = line.Split(',');   //Splits the colums at the comma 
-
-
-                        CSVColunm1.Add(values[0]);       //Adds the values of the 1st colum to the list 
-                        CSVColunm2.Add(values[1]);          //Adds the values of the 2nd colum to the list
-                        CSVColunm3.Add(values[2]);        //Adds the values of the 3rd colum to the list
-                       
+                        Console.WriteLine(line);
                     }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("CSV File Unreadable");
-                    }
-
-
                 }
             }
+            catch (Exception e)
+            {
+                // Let the user know what went wrong.
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+
+
 
         }
+
+            //using (var reader = new StreamReader("UserDetails.csv"))
+            //{
+
+
+               
+            //    while (!reader.EndOfStream)
+            //    {
+            //        try
+            //        {
+            //            var line = reader.ReadLine();   //Reads each line of file 
+            //            var values = line.Split(',', ',', ',', ',');   //Splits the colums at the comma 
+
+
+            //            personName.Add(values[0]);       //Adds the persons name to the list  
+            //            storedUserName.Add(values[1]);       //Adds the user name to the list
+            //            storedUserPassowrd.Add(values[2]);       //Adds the user password to the list
+            //            jobPosition.Add(values[3]);          //Adds the user job title to the list 
+            //            if (values[4] != null)
+            //            {
+            //                personalSupervisor.Add(values[4]);  //Adds the students personal supervisor name
+            //            }
+            //            else
+            //            {
+            //                personalSupervisor.Add("");     //Adds a default value as member is alreay a PS or SL 
+            //            }
+
+
+            //        }
+            //        catch (Exception)
+            //        {
+            //            Console.WriteLine("CSV File Unreadable");
+            //        }
+
+
+            //    }
+            //}
+
+        //}
 
 
     }
