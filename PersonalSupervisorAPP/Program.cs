@@ -79,7 +79,7 @@ namespace PersonalSupervisorAPP
                         CSVColunm1.Add(values[0]);       //Adds the values of the 1st colum to the list 
                         CSVColunm2.Add(values[1]);          //Adds the values of the 2nd colum to the list
                         CSVColunm3.Add(values[2]);        //Adds the values of the 3rd colum to the list
-                        paintPrice.Add(double.Parse(values[3]) / 100);          //Adds the values of the 4th colum to the list
+                       
                     }
                     catch (Exception)
                     {
