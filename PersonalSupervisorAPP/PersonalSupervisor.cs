@@ -29,6 +29,7 @@ namespace PersonalSupervisorAPP
         //Displays the menu that the student can see 
         public static void PersonalSupervisorMenu()
         {
+            Console.Clear();
             int userMenuChoice = 0;
             Console.WriteLine("=================");
             Console.WriteLine("Personal Supervisor Menu");
@@ -36,9 +37,9 @@ namespace PersonalSupervisorAPP
             Console.WriteLine("=================");
             Console.WriteLine("1. Veiw students feelings");
             Console.WriteLine("2. View upcoming meetings");
-            do
+            while (userMenuChoice < 1 || userMenuChoice >2) 
             {
-                Console.WriteLine("\nPlease enter a option from 1 to 3");
+                Console.WriteLine("\nPlease enter a option from 1 to 2");
 
                 try
                 {
@@ -49,7 +50,7 @@ namespace PersonalSupervisorAPP
                     Console.WriteLine("That wasen't a number");
                 }
 
-            } while (userMenuChoice != 1 || userMenuChoice != 2);
+            } 
 
             switch (userMenuChoice)
             {
@@ -94,16 +95,14 @@ namespace PersonalSupervisorAPP
 
             static void StudentFeelings()
             {
-                string sName = PersonalSupervisor.supervisorName.ToString(); 
+                string sName = PersonalSupervisor._supervisorName; 
                 List<string> supervsiorStudentFeelings = new List<string>();
-                string filePath = @"studentFeelings.csv"; //File that needs to be read
+                string filePath = @"studentFeeling.csv"; //File that needs to be read
                 //Console.WriteLine(File.Exists(filePath) ? "File exists." : "File does not exist.");
 
                 //Reads the file and sperates the inforamtion to be used later 
                 using (var reader = new StreamReader(filePath))
                 {
-
-
 
                     while (!reader.EndOfStream)
                     {
@@ -132,16 +131,21 @@ namespace PersonalSupervisorAPP
                 {
                     if (supervisorName[i] == sName)
                     {
-                        supervsiorStudentFeelings.Add(dateSubmitted[i] + studentName[i] + studentFeeling[i] + supervisorName[i]); 
+                        Console.WriteLine("Date Submitted: " + dateSubmitted[i]);
+                        Console.WriteLine("Student Name: " + studentName[i]);
+                        Console.WriteLine("Feeling Submitted: " + studentFeeling[i]);
+                        Console.WriteLine("-------------------------------------------\n");
+                        
                     }
                 }
 
-                foreach (string studentRecord in supervsiorStudentFeelings)
-                {
-                    Console.WriteLine(studentRecord);
-                }
+             
+
+                Program.LogOutOrContine(PersonalSupervisor._jobtype);
 
             }
+
+            
 
 
         }

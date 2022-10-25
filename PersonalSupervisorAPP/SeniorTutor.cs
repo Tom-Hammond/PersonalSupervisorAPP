@@ -29,6 +29,7 @@ namespace PersonalSupervisorAPP
         //Displays the menu that the student can see 
         public static void SeniorTutorMenu()
         {
+            Console.Clear();
             int userMenuChoice = 0;
             Console.WriteLine("=================");
             Console.WriteLine("Senior Tutor Menu");
@@ -67,10 +68,11 @@ namespace PersonalSupervisorAPP
 
         static void StudentStatus()
         {
-            
+          
+
             List<string> supervsiorStudentFeelings = new List<string>();
-            string filePath = @"C:\Users\tomha\source\repos\PersonalSupervisorAPP\PersonalSupervisorAPP\studentFeelings.csv"; //File that needs to be read
-                                                                                                                              //Console.WriteLine(File.Exists(filePath) ? "File exists." : "File does not exist.");
+            string filePath = @"studentFeeling.csv"; //File that needs to be read
+                                                                                                                           
 
             //Reads the file and sperates the inforamtion to be used later 
             using (var reader = new StreamReader(filePath))
@@ -103,15 +105,17 @@ namespace PersonalSupervisorAPP
 
             for (int i = 0; i < dateSubmitted.Count; i++)
             {
-               
-                    supervsiorStudentFeelings.Add(dateSubmitted[i] + studentName[i] + studentFeeling[i] + supervisorName[i]);
-                
+    
+                Console.WriteLine("Date Submitted: " + dateSubmitted[i]);
+                Console.WriteLine("Student Name: " + studentName[i]);
+                Console.WriteLine("Student Feeling: " + studentFeeling[i]);
+                Console.WriteLine("Supervisor Name: " + supervisorName[i]);
+                Console.WriteLine("-------------------------------------------\n");
+                  
             }
 
-            foreach (string studentRecord in supervsiorStudentFeelings)
-            {
-                Console.WriteLine(studentRecord);
-            }
+          
+
 
         }
 
@@ -227,6 +231,25 @@ namespace PersonalSupervisorAPP
                 writer.WriteLine(dataToBeAdded);
             }
 
+
+
+        }
+
+
+        static void StudentMeetingsBooked()
+        {
+           
+           
+
+            foreach (Student student in Program.studentsList)
+            {
+                Console.WriteLine("Student Name: " + student.StudentName);
+                Console.WriteLine("Personal Supervisor: " + student.PersonalSupervisorName);
+                Console.WriteLine("Feelings Submitted: " + student.FeelingsRegistered);
+                Console.WriteLine("Meetings Booked: " + student.MeetingsBooked);
+                Console.WriteLine("-------------------------------------------\n");
+
+            }
 
 
         }

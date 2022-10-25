@@ -12,8 +12,9 @@ namespace PersonalSupervisorAPP
         static List<string> jobPosition = new List<string>();
         static List<string> personalSupervisor = new List<string>();
 
+        public static List<Student> studentsList = new List<Student>();
         public static List<string> meetingDay = new List<string>();
-        public static List<string> meetingTime = new List<string>();
+        public static List<int> meetingTime = new List<int>();
         public static List<string> meetingSupervisor = new List<string>();
         public static List<string> meetingsBooked = new List<string>();
 
@@ -23,7 +24,6 @@ namespace PersonalSupervisorAPP
         static void Main(string[] args)
         {
             ReadCSVFile();
-            CreateMembers();
             LogInMenu();
         }
 
@@ -206,39 +206,7 @@ namespace PersonalSupervisorAPP
 
         }
 
-        static void CreateMembers()
-        {
-            int indexNum = 0;
-
-
-            List<Student> studentsList = new List<Student>();
-            List <PersonalSupervisor> personakSupervisorList = new List<PersonalSupervisor>();
-            List <SeniorTutor> seniorTutorList = new List<SeniorTutor>();
-
-            foreach (string job in jobPosition)
-            {
-                if (job == "Student")
-                {
-                    studentsList.Add(new Student(personName[indexNum], storedUserName[indexNum], storedUserPassowrd[indexNum], personalSupervisor[indexNum]));
-                    indexNum++;
-                }
-                else if (job == "PS")
-                {
-                    personakSupervisorList.Add(new PersonalSupervisor(personName[indexNum], storedUserName[indexNum], storedUserPassowrd[indexNum]));
-                    indexNum++; 
-                }
-                else if (job == "SL")
-                {
-                    seniorTutorList.Add(new SeniorTutor(personName[indexNum], storedUserName[indexNum], storedUserPassowrd[indexNum]));
-                    indexNum++;
-                }
-                else
-                {
-                    indexNum++;
-                }
-            }       
-
-        }
+        
 
         public static void LogOutOrContine(in string jobtype)
         {
@@ -316,7 +284,7 @@ namespace PersonalSupervisorAPP
 
 
                         meetingDay.Add(values[0]);       
-                        meetingTime.Add(values[1]);      
+                        meetingTime.Add(int.Parse(values[1]));      
                         meetingSupervisor.Add(values[2]);
                         if (values[3] == null)
                         {

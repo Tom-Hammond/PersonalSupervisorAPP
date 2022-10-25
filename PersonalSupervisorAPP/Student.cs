@@ -11,11 +11,13 @@ namespace PersonalSupervisorAPP
         private static string _studentName;
         private static string _studentUserName;
         private static string _studentUserPassword;
-        private static string _studentPersonalSupervisor;
+        public static string _studentPersonalSupervisor;
         private static string _jobtype;
-       // static string[] studentFeelings = new string[3];
-        static int timesEntered = 0;
-        static Timer feelingsTimer; 
+        private static int _feelingsEntered = 0;
+        private static int _meetingsBooked = 0;
+
+        static List<string> studentName = new List<string>();
+
 
         //Constructor 
         public Student(string name, string userName, string userPassword, string personalSupervisor) 
@@ -24,19 +26,37 @@ namespace PersonalSupervisorAPP
             _studentUserName = userName;
             _studentUserPassword = userPassword;
             _studentPersonalSupervisor = personalSupervisor;
-           _jobtype = "student"; 
+           _jobtype = "student";
+            _feelingsEntered = 0; 
 
+        }
+
+        public int FeelingsRegistered
+        {
+            get { return _feelingsEntered; }          
+        }
+        public int MeetingsBooked   
+        {
+            get { return _meetingsBooked; }          
+        }
+        public string StudentName
+        {
+            get { return _studentName; }
+        }
+        public string PersonalSupervisorName
+        {
+            get { return _studentPersonalSupervisor; }
         }
 
 
 
-       
+
+
 
         //Displays the menu that the student can see 
         public static void StudentMenu()
         {
             Console.Clear();
-
             int userMenuChoice = 0;
             Console.WriteLine("=================");
             Console.WriteLine("Student Menu");
@@ -81,9 +101,33 @@ namespace PersonalSupervisorAPP
 
         static void ReportFeelings()
         {
+            Console.Clear(); 
+
+            string filePath = @"studentFeeling.csv";
+            
+            using (var reader = new StreamReader(filePath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();   //Reads each line of file 
+                    var values = line.Split(',', ',', ',');   //Splits the colums at the comma
+                    studentName.Add(values[1]);
+
+                   
+                }
+            }
+
+            for (int i = 0; i < studentName.Count; i++)
+            {
+                if (studentName[i] == Student._studentName)
+                {
+                    _feelingsEntered++;
+                }
+            }
 
 
-            if (timesEntered < 3)
+
+            if (Student._feelingsEntered < 3)
             {
                 Console.Clear();
                 string studentFeeling = null;
@@ -113,19 +157,26 @@ namespace PersonalSupervisorAPP
 
                 } while (confirmedFeeling == false);
 
-                string filePath = @"studentFeelings.csv"; 
-
+               // string filePath = @"studentFeeling.csv";
                 using (StreamWriter sw = new StreamWriter(filePath))
                 {
                     sw.WriteLine(DateTime.Now + "," + Student._studentName + "," + Student._studentPersonalSupervisor + "," + studentFeeling);
                     Console.WriteLine("Feeling Added");
                 }
 
+               
+
              
-                timesEntered++;
+                Student._feelingsEntered++;
 
              
 
+            }
+            else
+            {
+                Console.WriteLine("\nYou have alreay submitted the maximum amount of feelings");
+                Console.WriteLine("If you have any more issues please contact your personal supervisor");
+                Console.WriteLine("Your personal supervsior is " + Student._studentPersonalSupervisor);
             }
 
             Program.LogOutOrContine(_jobtype);
@@ -199,6 +250,7 @@ namespace PersonalSupervisorAPP
 
             Console.WriteLine("Your meeting has been booked");
             Console.WriteLine(meetingBookedLine);
+            _meetingsBooked++;
 
             Program.LogOutOrContine(Student._jobtype);
 
@@ -208,18 +260,41 @@ namespace PersonalSupervisorAPP
 
         static void ViewMeetings()
         {
-           
-             for (int i = 0; i < Program.meetingsBooked.Count; i++)
-             {
+            bool bookMeeting = false;
+            
+            Program.GetMeetingTimes(); 
+
+            for (int i = 0; i < Program.meetingsBooked.Count; i++)
+            {
                    if (Program.meetingsBooked[i] == Student._studentName)
                    {
-                            Console.WriteLine(Program.meetingDay[i] + Program.meetingTime[i] + Program.meetingSupervisor[i] + Program.meetingsBooked[i]);
-                            Program.LogOutOrContine(Student._jobtype);
+
+                        if (Program.meetingTime[i] < 12 && Program.meetingTime[i] >= 9)
+                        {
+                            Console.WriteLine("Day: " + Program.meetingDay[i] + " ");
+                            Console.WriteLine("Time: " + Program.meetingTime[i] + "am" + " ");
+                            Console.WriteLine("Supervisor Name: " + Program.meetingSupervisor[i] + " ");
+                            Console.WriteLine("-------------------------------------------\n");
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Day: " + Program.meetingDay[i] + " ");
+                            Console.WriteLine("Time: " + Program.meetingTime[i] + "pm" + " ");
+                            Console.WriteLine("Supervisor Name: " + Program.meetingSupervisor[i] + " ");
+                            Console.WriteLine("-------------------------------------------\n");
+                        }
+                          
+                        bookMeeting = true; 
                    }
-             } 
-                
-           
-            Console.WriteLine("No upcoming meetings");
+                   
+            }
+
+            if (bookMeeting == false)
+            {
+                Console.WriteLine("No meetings booked");
+            }
+ 
             Program.LogOutOrContine(Student._jobtype);
 
 
