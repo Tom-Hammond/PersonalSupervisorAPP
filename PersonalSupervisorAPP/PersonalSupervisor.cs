@@ -70,23 +70,26 @@ namespace PersonalSupervisorAPP
                 try
                 {
                     int index = 0;
+                    bool noMeetings = true;
                     foreach (string meeting in Program.meetingsBooked)
                     {
                         if (Program.meetingSupervisor[index] == PersonalSupervisor._supervisorName && Program.meetingsBooked[index] != "")
                         {
-                            Console.WriteLine(Program.meetingDay[index] + Program.meetingTime[index] + Program.meetingSupervisor[index] + Program.meetingsBooked[index]);
-                            Program.LogOutOrContine(PersonalSupervisor._jobtype);
+                            Console.WriteLine(Program.meetingDay[index] + " at " + Program.meetingTime[index] + " with " + Program.meetingsBooked[index]);
+                          
+                            noMeetings = false;
                         }
+                        index++;
                     }
 
                 }
                 catch (Exception)
                 {
 
-                    Console.WriteLine("You have no upcoming meetings ");
+                    Console.WriteLine("An error has occored");
 
                 }
-                Console.WriteLine("No upcoming meetings");
+            
                 Program.LogOutOrContine(PersonalSupervisor._jobtype);
 
 
@@ -97,7 +100,7 @@ namespace PersonalSupervisorAPP
             {
                 string sName = PersonalSupervisor._supervisorName; 
                 List<string> supervsiorStudentFeelings = new List<string>();
-                string filePath = @"studentFeeling.csv"; //File that needs to be read
+                string filePath = "studentFeeling.csv"; //File that needs to be read
                 //Console.WriteLine(File.Exists(filePath) ? "File exists." : "File does not exist.");
 
                 //Reads the file and sperates the inforamtion to be used later 

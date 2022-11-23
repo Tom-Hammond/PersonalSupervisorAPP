@@ -24,6 +24,7 @@ namespace PersonalSupervisorAPP
         static void Main(string[] args)
         {
             ReadCSVFile();
+            GetMeetingTimes();
             LogInMenu();
         }
 
@@ -147,6 +148,9 @@ namespace PersonalSupervisorAPP
                     }
                     catch (Exception)
                     {
+                        Console.Clear();
+                        Console.WriteLine("An error has occored");
+                        Console.WriteLine("Please log back in");
                         LogInMenu();
                     }
                     Console.ReadLine();

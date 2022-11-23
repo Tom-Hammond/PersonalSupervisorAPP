@@ -233,23 +233,31 @@ namespace PersonalSupervisorAPP
                 }
                
             }
-            
 
-            if (Student._studentPersonalSupervisor == "Kate Moss")
+            int otherPsCount = 0;
+            if (_studentPersonalSupervisor == "Kate Moss")
             {
-                lineToEdit = userChoice - 1;
+                lineToEdit = userChoice;
             }
-            else if (Student._studentPersonalSupervisor == "Bob Young")
+            else if (_studentPersonalSupervisor == "Bob Young")
             {
-                lineToEdit = index - userChoice - 1; 
+                foreach (string supervisor in Program.meetingSupervisor)
+                {
+                    if (supervisor != _studentPersonalSupervisor)
+                    {
+                        otherPsCount++;
+                    }
+                }
+                lineToEdit =  otherPsCount + userChoice + 1; 
             }
 
             string meetingBookedLine = Program.meetingDay[lineToEdit] + Program.meetingTime[lineToEdit] + Program.meetingSupervisor[lineToEdit] + Student._studentName;
 
             Program.lineChanger(meetingBookedLine, "meetings.csv", lineToEdit);
 
+            
             Console.WriteLine("Your meeting has been booked");
-            Console.WriteLine(meetingBookedLine);
+            Console.WriteLine(Program.meetingDay[lineToEdit] + " at " + Program.meetingTime[lineToEdit] + " with " + Program.meetingSupervisor[lineToEdit]);
             _meetingsBooked++;
 
             Program.LogOutOrContine(Student._jobtype);

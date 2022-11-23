@@ -9,6 +9,9 @@
     <None Update="meetings.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="studentFeeling.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="UserDetails.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
